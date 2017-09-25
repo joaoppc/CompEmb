@@ -10,11 +10,11 @@
  *  ou ser atualizado pelo PC.
  */
 #define YEAR        2017
-#define MOUNTH      3
-#define DAY         27
+#define MONTH      9
+#define DAY         18
 #define WEEK        13
-#define HOUR        9
-#define MINUTE      5
+#define HOUR        17
+#define MINUTE      20
 #define SECOND      0
 
 /**
@@ -183,7 +183,7 @@ void RTC_init(){
     rtc_set_hour_mode(RTC, 0);
 
     /* Configura data e hora manualmente */
-    rtc_set_date(RTC, YEAR, MOUNTH, DAY, WEEK);
+    rtc_set_date(RTC, YEAR, MONTH, DAY, WEEK);
     rtc_set_time(RTC, HOUR, MINUTE, SECOND);
 
     /* Configure RTC interrupts */
@@ -220,7 +220,7 @@ int main(void){
   RTC_init();
 
   /* configura alarme do RTC */    
-  rtc_set_date_alarm(RTC, 1, MOUNTH, 1, DAY);
+  rtc_set_date_alarm(RTC, 1, MONTH, 1, DAY);
   rtc_set_time_alarm(RTC, 1, HOUR, 1, MINUTE+1, 1, SECOND);
         
 	while (1) {

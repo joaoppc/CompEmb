@@ -46,7 +46,8 @@ void but_init(void);
  * @Brief Inicializa o pino do LED
  */
 void led_init(int estado){
-	PMC->PMC_PCER0    = (1<<LED_PIO_ID);	    // Ativa clock do periférico no PMC
+	//PMC->PMC_PCER0    = (1<<LED_PIO_ID);
+	_pmc_enable_periph_clock(LED_PIO_ID);	    // Ativa clock do periférico no PMC
 	LED_PIO->PIO_PER  = LED_PIN_MASK;           // Ativa controle do pino no PIO    (PIO ENABLE register)
 	LED_PIO->PIO_OER  = LED_PIN_MASK;           // Ativa saída                      (Output ENABLE register)
     if(!estado)                                 // Checa pela inicialização desejada
@@ -59,7 +60,8 @@ void led_init(int estado){
  * @Brief Inicializa o pino do BUT
  */
 void but_init(void){
-	PMC->PMC_PCER0       = (1<<BUT_PIO_ID);     // Ativa clock do periférico no PMC
+	//PMC->PMC_PCER0       = (1<<BUT_PIO_ID); 
+	_pmc_enable_periph_clock(BUT_PIO_ID);    // Ativa clock do periférico no PMC
 	BUT_PIO->PIO_ODR	 = BUT_PIN_MASK;        // Desativa saída                   (Output DISABLE register)
 	BUT_PIO->PIO_PER	 = BUT_PIN_MASK;        // Ativa controle do pino no PIO    (PIO ENABLE register)
 	BUT_PIO->PIO_PUER	 = BUT_PIN_MASK;        // Ativa pull-up no PIO             (PullUp ENABLE register)
