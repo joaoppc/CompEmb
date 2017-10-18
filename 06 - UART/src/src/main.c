@@ -180,8 +180,14 @@ uint32_t usart_puts(uint8_t *pstring){
  * Retorna a quantidade de char lidos
  */
 uint32_t usart_gets(uint8_t *pstring){
-	
-  return 0;  
+  int count = 0;
+  char c;
+  while(pstring[count] != "\n"){
+    usart_serial_getchar(USART_COM, pstring);
+    pstring[count++] = c
+  }
+  pstring[count-1] = 0;
+  return count;  
 }
 
 /************************************************************************/
@@ -210,8 +216,13 @@ int main(void){
         
 	while (1) {
     sprintf(bufferTX, "%s \n", "Ola Voce");
+    if(uart_is_tx_empty(USART_COM)){
+  
     usart_puts(bufferTX);
-   // usart_gets(bufferRX);
+
+  }
+    usart_gets(bufferRX);
+    
     delay_s(1);
 	}
 }
