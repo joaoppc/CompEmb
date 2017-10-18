@@ -20,20 +20,52 @@
 /**
  * LEDs
  */
-#define LED_PIO_ID		ID_PIOC
-#define LED_PIO         PIOC
-#define LED_PIN		    8
-#define LED_PIN_MASK    (1<<LED_PIN)
 
+
+#define LED_PIO_ID            ID_PIOA
+#define LED_PIO_               PIOA
+#define LED_PIN_               0
+#define LED_PIN_MASK          (1<<LED_PIN_1)
+
+
+
+
+#define LED2_PIO_ID            ID_PIOC
+#define LED2_PIO               PIOC
+#define LED2_PIN               30
+#define LED2_PIN_MASK          (1<<LED_PIN_2)
+
+
+
+
+
+#define LED3_PIO_ID             ID_PIOB
+#define LED3_PIO               PIOB
+#define LED3_PIN               2
+#define LED3_PIN_MASK          (1<<LED_PIN_3)
 /**
  * Botão
  */
-#define BUT_PIO_ID      ID_PIOA
-#define BUT_PIO         PIOA
-#define BUT_PIN		    11
-#define BUT_PIN_MASK    (1 << BUT_PIN)
-#define BUT_DEBOUNCING_VALUE  79
+#define BUT_PIO_ID        ID_PIOD
+#define BUT_PIO           PIOD
+#define BUT_PIN       28
+#define BUT_PIN_MASK        (1 << BUT_PIN_1)
 
+
+#define BUT2_PIO_ID        ID_PIOC
+#define BUT2_PIO           PIOC
+#define BUT2_PIN       31
+#define BUT2_PIN_MASK        (1 << BUT_PIN_2)
+
+
+#define BUT3_PIO_ID        ID_PIOA
+#define BUT3_PIO_          PIOA
+#define BUT3_PIN          19
+#define BUT3_PIN_MASK        (1 << BUT_PIN_3)
+
+
+
+#define DEBOUNCING_VALUE  79
 /************************************************************************/
 /* VAR globais                                                          */
 /************************************************************************/
@@ -57,10 +89,11 @@ void pin_toggle(Pio *pio, uint32_t mask);
 /**
  *  Handle Interrupcao botao 1
  */
-static void Button1_Handler(uint32_t id, uint32_t mask)
+static void But_Handler(uint32_t id, uint32_t mask)
 {
-	
+
 }
+
 
 /**
  *  Interrupt handler for TC1 interrupt. 
