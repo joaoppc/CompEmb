@@ -184,7 +184,7 @@ uint32_t usart_gets(uint8_t *pstring){
   char c;
   while(pstring[count] != "\n"){
     usart_serial_getchar(USART_COM, pstring);
-    pstring[count++] = c
+    pstring[count++] = c;
   }
   pstring[count-1] = 0;
   return count;  
