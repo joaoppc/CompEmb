@@ -7393,7 +7393,7 @@ OUTPUT(Projeto2-Otimizacao-Energetica.elf elf32-littlearm)
  .debug_line    0x000098d4      0x3da src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_line    0x00009cae     0x10d3 src/main.o
 
-.debug_str      0x00000000    0x8a603
+.debug_str      0x00000000    0x8a648
  .debug_str     0x00000000    0x84d0d src/ASF/common/services/clock/same70/sysclk.o
                               0x85357 (size before relaxing)
  .debug_str     0x00084d0d       0x94 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
@@ -7422,8 +7422,8 @@ OUTPUT(Projeto2-Otimizacao-Energetica.elf elf32-littlearm)
                               0x726b2 (size before relaxing)
  .debug_str     0x0008834d      0x74f src/ASF/sam/utils/syscalls/gcc/syscalls.o
                                0x6a12 (size before relaxing)
- .debug_str     0x00088a9c     0x1b67 src/main.o
-                              0x87c43 (size before relaxing)
+ .debug_str     0x00088a9c     0x1bac src/main.o
+                              0x87c33 (size before relaxing)
 
 .debug_frame    0x00000000     0x3c20
  .debug_frame   0x00000000      0x240 src/ASF/common/services/clock/same70/sysclk.o

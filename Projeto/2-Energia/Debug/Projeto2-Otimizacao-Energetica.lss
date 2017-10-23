@@ -31,9 +31,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  13 .debug_line   0000ad81  00000000  00000000  00053adf  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    0008a603  00000000  00000000  0005e860  2**0
+ 14 .debug_str    0008a648  00000000  00000000  0005e860  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  00003c20  00000000  00000000  000e8e64  2**2
+ 15 .debug_frame  00003c20  00000000  00000000  000e8ea8  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -6633,6 +6633,7 @@ int main(void){
   4022b0:	4798      	blx	r3
   
 	while (1) {
+		//sleepmgr_enter_sleep();
 	}
   4022b2:	e7fe      	b.n	4022b2 <main+0x26>
   4022b4:	0040049d 	.word	0x0040049d

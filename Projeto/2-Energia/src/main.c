@@ -254,6 +254,8 @@ int main(void){
   USART1_init();
   
 	while (1) {
+		//sleepmgr_enter_sleep();
+		//pmc_sleep(SLEEPMGR_SLEEP_WFI);
 	}
-
+	
 }

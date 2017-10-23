@@ -26,9 +26,9 @@
 
 
 #define LED_PIO_ID            ID_PIOA
-#define LED_PIO_               PIOA
-#define LED_PIN_               0
-#define LED_PIN_MASK          (1<<LED_PIN_1)
+#define LED_PIO               PIOA
+#define LED_PIN              0
+#define LED_PIN_MASK          (1<<LED_PIN)
 
 
 
@@ -36,7 +36,7 @@
 #define LED2_PIO_ID            ID_PIOC
 #define LED2_PIO               PIOC
 #define LED2_PIN               30
-#define LED2_PIN_MASK          (1<<LED_PIN_2)
+#define LED2_PIN_MASK          (1<<LED2_PIN)
 
 
 
@@ -45,26 +45,26 @@
 #define LED3_PIO_ID             ID_PIOB
 #define LED3_PIO               PIOB
 #define LED3_PIN               2
-#define LED3_PIN_MASK          (1<<LED_PIN_3)
+#define LED3_PIN_MASK          (1<<LED3_PIN)
 /**
  * Botão
  */
 #define BUT_PIO_ID        ID_PIOD
 #define BUT_PIO           PIOD
 #define BUT_PIN       28
-#define BUT_PIN_MASK        (1 << BUT_PIN_1)
+#define BUT_PIN_MASK        (1 << BUT_PIN)
 
 
 #define BUT2_PIO_ID        ID_PIOC
 #define BUT2_PIO           PIOC
 #define BUT2_PIN       31
-#define BUT2_PIN_MASK        (1 << BUT_PIN_2)
+#define BUT2_PIN_MASK        (1 << BUT2_PIN)
 
 
 #define BUT3_PIO_ID        ID_PIOA
-#define BUT3_PIO_          PIOA
+#define BUT3_PIO          PIOA
 #define BUT3_PIN          19
-#define BUT3_PIN_MASK        (1 << BUT_PIN_3)
+#define BUT3_PIN_MASK        (1 << BUT3_PIN)
 
 
 
@@ -89,16 +89,16 @@ void but_Handler(){
      *  limpa interrupcao do PIO
      */
     uint32_t pioIntStatus;
-    pioIntStatus =  pio_get_interrupt_status(BUT_PIO_1);
-    flag_handler_1 = 1;
+    pioIntStatus =  pio_get_interrupt_status(BUT_PIO);
+    
     
     /**
     *  Toggle status led
     */
-   if(pio_get_output_data_status(LED_PIO_1, LED_PIN_1_MASK))
-        pio_clear(LED_PIO_1, LED_PIN_1_MASK);
+   if(pio_get_output_data_status(LED_PIO, LED_PIN_MASK))
+        pio_clear(LED_PIO, LED_PIN_MASK);
    else
-        pio_set(LED_PIO_1,LED_PIN_1_MASK);
+        pio_set(LED_PIO,LED_PIN_MASK);
 }
 
 void but2_Handler(){
@@ -106,15 +106,15 @@ void but2_Handler(){
      *  limpa interrupcao do PIO
      */
     uint32_t pioIntStatus;
-    pioIntStatus =  pio_get_interrupt_status(BUT_PIO_2);
-    flag_handler_2 = 1;
+    pioIntStatus =  pio_get_interrupt_status(BUT2_PIO);
+    
    /**
     *  Toggle status led
     */
-   if(pio_get_output_data_status(LED_PIO_2, LED_PIN_2_MASK))
-    pio_clear(LED_PIO_2, LED_PIN_2_MASK);
+   if(pio_get_output_data_status(LED2_PIO, LED2_PIN_MASK))
+    pio_clear(LED2_PIO, LED2_PIN_MASK);
    else
-    pio_set(LED_PIO_2,LED_PIN_2_MASK);
+    pio_set(LED2_PIO,LED2_PIN_MASK);
     
 }
 
@@ -123,15 +123,15 @@ void but3_Handler(){
      *  limpa interrupcao do PIO
      */
     uint32_t pioIntStatus;
-    pioIntStatus =  pio_get_interrupt_status(BUT_PIO_3);
-    flag_handler_3 = 1;
+    pioIntStatus =  pio_get_interrupt_status(BUT3_PIO);
+    
    /**
     *  Toggle status led
     */
-   if(pio_get_output_data_status(LED_PIO_3, LED_PIN_3_MASK))
-    pio_clear(LED_PIO_3, LED_PIN_3_MASK);
+   if(pio_get_output_data_status(LED_PIO, LED_PIN_MASK))
+    pio_clear(LED3_PIO, LED3_PIN_MASK);
    else
-    pio_set(LED_PIO_3,LED_PIN_3_MASK);
+    pio_set(LED3_PIO,LED3_PIN_MASK);
     
 }
 
