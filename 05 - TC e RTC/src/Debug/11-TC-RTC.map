@@ -6621,7 +6621,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x00401710       0x20 src/main.o
  .text.sysclk_get_cpu_hz
                 0x00401730       0x14 src/main.o
- .text.Button1_Handler
+ .text.But_Handler
                 0x00401744       0x18 src/main.o
  .text.TC1_Handler
                 0x0040175c       0x44 src/main.o
@@ -6919,7 +6919,7 @@ OUTPUT(11-TC-RTC.elf elf32-littlearm)
  .debug_ranges  0x00000680       0x20 src/ASF/sam/utils/cmsis/same70/source/templates/system_same70.o
  .debug_ranges  0x000006a0       0x88 src/main.o
 
-.debug_macro    0x00000000    0x1c341
+.debug_macro    0x00000000    0x1c3a1
  .debug_macro   0x00000000      0x6a1 src/ASF/common/services/clock/same70/sysclk.o
  .debug_macro   0x000006a1      0x8aa src/ASF/common/services/clock/same70/sysclk.o
  .debug_macro   0x00000f4b      0x652 src/ASF/common/services/clock/same70/sysclk.o
@@ -7078,14 +7078,14 @@ OUTPUT(11-TC-RTC.elf elf32-littlearm)
  .debug_macro   0x0001ae4d      0x636 src/ASF/sam/utils/cmsis/same70/source/templates/gcc/startup_same70.o
  .debug_macro   0x0001b483       0x10 src/ASF/sam/utils/cmsis/same70/source/templates/gcc/startup_same70.o
  .debug_macro   0x0001b493      0x455 src/ASF/sam/utils/cmsis/same70/source/templates/system_same70.o
- .debug_macro   0x0001b8e8      0x809 src/main.o
- .debug_macro   0x0001c0f1       0x40 src/main.o
- .debug_macro   0x0001c131       0x10 src/main.o
- .debug_macro   0x0001c141      0x1ce src/main.o
- .debug_macro   0x0001c30f       0x16 src/main.o
- .debug_macro   0x0001c325       0x1c src/main.o
+ .debug_macro   0x0001b8e8      0x869 src/main.o
+ .debug_macro   0x0001c151       0x40 src/main.o
+ .debug_macro   0x0001c191       0x10 src/main.o
+ .debug_macro   0x0001c1a1      0x1ce src/main.o
+ .debug_macro   0x0001c36f       0x16 src/main.o
+ .debug_macro   0x0001c385       0x1c src/main.o
 
-.debug_line     0x00000000     0x78d5
+.debug_line     0x00000000     0x78d6
  .debug_line    0x00000000      0xc3b src/ASF/common/services/clock/same70/sysclk.o
  .debug_line    0x00000c3b      0x9dd src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_line    0x00001618      0xdeb src/ASF/sam/drivers/pio/pio.o
@@ -7095,9 +7095,9 @@ OUTPUT(11-TC-RTC.elf elf32-littlearm)
  .debug_line    0x00004b4e      0xb60 src/ASF/sam/drivers/tc/tc.o
  .debug_line    0x000056ae      0xa94 src/ASF/sam/utils/cmsis/same70/source/templates/gcc/startup_same70.o
  .debug_line    0x00006142      0x819 src/ASF/sam/utils/cmsis/same70/source/templates/system_same70.o
- .debug_line    0x0000695b      0xf7a src/main.o
+ .debug_line    0x0000695b      0xf7b src/main.o
 
-.debug_str      0x00000000    0x88ee7
+.debug_str      0x00000000    0x8900b
  .debug_str     0x00000000    0x84cfd src/ASF/common/services/clock/same70/sysclk.o
                               0x85347 (size before relaxing)
  .debug_str     0x00084cfd       0x94 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
@@ -7116,8 +7116,8 @@ OUTPUT(11-TC-RTC.elf elf32-littlearm)
                               0x81c6b (size before relaxing)
  .debug_str     0x000872ca      0x1aa src/ASF/sam/utils/cmsis/same70/source/templates/system_same70.o
                               0x726a2 (size before relaxing)
- .debug_str     0x00087474     0x1a73 src/main.o
-                              0x87773 (size before relaxing)
+ .debug_str     0x00087474     0x1b97 src/main.o
+                              0x87897 (size before relaxing)
 
 .debug_frame    0x00000000     0x21f4
  .debug_frame   0x00000000      0x240 src/ASF/common/services/clock/same70/sysclk.o

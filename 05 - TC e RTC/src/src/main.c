@@ -23,9 +23,9 @@
 
 
 #define LED_PIO_ID            ID_PIOA
-#define LED_PIO_               PIOA
-#define LED_PIN_               0
-#define LED_PIN_MASK          (1<<LED_PIN_1)
+#define LED_PIO               PIOA
+#define LED_PIN               0
+#define LED_PIN_MASK          (1<<LED_PIN)
 
 
 
@@ -33,7 +33,7 @@
 #define LED2_PIO_ID            ID_PIOC
 #define LED2_PIO               PIOC
 #define LED2_PIN               30
-#define LED2_PIN_MASK          (1<<LED_PIN_2)
+#define LED2_PIN_MASK          (1<<LED2_PIN)
 
 
 
@@ -42,26 +42,26 @@
 #define LED3_PIO_ID             ID_PIOB
 #define LED3_PIO               PIOB
 #define LED3_PIN               2
-#define LED3_PIN_MASK          (1<<LED_PIN_3)
+#define LED3_PIN_MASK          (1<<LED3_PIN)
 /**
  * Botão
  */
 #define BUT_PIO_ID        ID_PIOD
 #define BUT_PIO           PIOD
 #define BUT_PIN       28
-#define BUT_PIN_MASK        (1 << BUT_PIN_1)
+#define BUT_PIN_MASK        (1 << BUT_PIN)
 
 
 #define BUT2_PIO_ID        ID_PIOC
 #define BUT2_PIO           PIOC
 #define BUT2_PIN       31
-#define BUT2_PIN_MASK        (1 << BUT_PIN_2)
+#define BUT2_PIN_MASK        (1 << BUT2_PIN)
 
 
 #define BUT3_PIO_ID        ID_PIOA
 #define BUT3_PIO_          PIOA
 #define BUT3_PIN          19
-#define BUT3_PIN_MASK        (1 << BUT_PIN_3)
+#define BUT3_PIN_MASK        (1 << BUT3_PIN)
 
 
 
@@ -162,7 +162,7 @@ void BUT_init(void){
     /* config. interrupcao em borda de descida no botao do kit */
     /* indica funcao (but_Handler) a ser chamada quando houver uma interrupção */
     pio_enable_interrupt(BUT_PIO, BUT_PIN_MASK);
-    pio_handler_set(BUT_PIO, BUT_PIO_ID, BUT_PIN_MASK, PIO_IT_FALL_EDGE, Button1_Handler);
+    pio_handler_set(BUT_PIO, BUT_PIO_ID, BUT_PIN_MASK, PIO_IT_FALL_EDGE, But_Handler);
     
     /* habilita interrupçcão do PIO que controla o botao */
     /* e configura sua prioridade                        */

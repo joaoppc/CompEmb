@@ -27,13 +27,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  11 .debug_ranges 00000728  00000000  00000000  0002e466  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  0001c341  00000000  00000000  0002eb8e  2**0
+ 12 .debug_macro  0001c3a1  00000000  00000000  0002eb8e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_line   000078d5  00000000  00000000  0004aecf  2**0
+ 13 .debug_line   000078d6  00000000  00000000  0004af2f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    00088ee7  00000000  00000000  000527a4  2**0
+ 14 .debug_str    0008900b  00000000  00000000  00052805  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  000021f4  00000000  00000000  000db68c  2**2
+ 15 .debug_frame  000021f4  00000000  00000000  000db810  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -4469,19 +4469,19 @@ static inline uint32_t sysclk_get_cpu_hz(void)
   40173e:	bf00      	nop
   401740:	00401711 	.word	0x00401711
 
-00401744 <Button1_Handler>:
+00401744 <But_Handler>:
 
 /**
  *  Handle Interrupcao botao 1
  */
-static void Button1_Handler(uint32_t id, uint32_t mask)
+static void But_Handler(uint32_t id, uint32_t mask)
 {
   401744:	b480      	push	{r7}
   401746:	b083      	sub	sp, #12
   401748:	af00      	add	r7, sp, #0
   40174a:	6078      	str	r0, [r7, #4]
   40174c:	6039      	str	r1, [r7, #0]
-	
+
 }
   40174e:	bf00      	nop
   401750:	370c      	adds	r7, #12
@@ -4491,6 +4491,7 @@ static void Button1_Handler(uint32_t id, uint32_t mask)
   40175a:	bf00      	nop
 
 0040175c <TC1_Handler>:
+
 
 /**
  *  Interrupt handler for TC1 interrupt. 
@@ -4522,21 +4523,22 @@ void TC1_Handler(void){
   401772:	781b      	ldrb	r3, [r3, #0]
   401774:	b2db      	uxtb	r3, r3
   401776:	2b00      	cmp	r3, #0
-  401778:	d004      	beq.n	401784 <TC1_Handler+0x28>
+  401778:	d003      	beq.n	401782 <TC1_Handler+0x26>
         pin_toggle(LED_PIO, LED_PIN_MASK);
-  40177a:	f44f 7180 	mov.w	r1, #256	; 0x100
-  40177e:	4806      	ldr	r0, [pc, #24]	; (401798 <TC1_Handler+0x3c>)
-  401780:	4b06      	ldr	r3, [pc, #24]	; (40179c <TC1_Handler+0x40>)
-  401782:	4798      	blx	r3
+  40177a:	2101      	movs	r1, #1
+  40177c:	4806      	ldr	r0, [pc, #24]	; (401798 <TC1_Handler+0x3c>)
+  40177e:	4b07      	ldr	r3, [pc, #28]	; (40179c <TC1_Handler+0x40>)
+  401780:	4798      	blx	r3
 }
-  401784:	bf00      	nop
-  401786:	3708      	adds	r7, #8
-  401788:	46bd      	mov	sp, r7
-  40178a:	bd80      	pop	{r7, pc}
+  401782:	bf00      	nop
+  401784:	3708      	adds	r7, #8
+  401786:	46bd      	mov	sp, r7
+  401788:	bd80      	pop	{r7, pc}
+  40178a:	bf00      	nop
   40178c:	4000c000 	.word	0x4000c000
   401790:	0040119d 	.word	0x0040119d
   401794:	20400008 	.word	0x20400008
-  401798:	400e1200 	.word	0x400e1200
+  401798:	400e0e00 	.word	0x400e0e00
   40179c:	004017f5 	.word	0x004017f5
 
 004017a0 <RTC_Handler>:
@@ -4667,12 +4669,12 @@ void BUT_init(void){
   401838:	af02      	add	r7, sp, #8
     /* config. pino botao em modo de entrada */
     pmc_enable_periph_clk(BUT_PIO_ID);
-  40183a:	200a      	movs	r0, #10
+  40183a:	2010      	movs	r0, #16
   40183c:	4b10      	ldr	r3, [pc, #64]	; (401880 <BUT_init+0x4c>)
   40183e:	4798      	blx	r3
     pio_set_input(BUT_PIO, BUT_PIN_MASK, PIO_PULLUP | PIO_DEBOUNCE);
   401840:	2209      	movs	r2, #9
-  401842:	f44f 6100 	mov.w	r1, #2048	; 0x800
+  401842:	f04f 5180 	mov.w	r1, #268435456	; 0x10000000
   401846:	480f      	ldr	r0, [pc, #60]	; (401884 <BUT_init+0x50>)
   401848:	4b0f      	ldr	r3, [pc, #60]	; (401888 <BUT_init+0x54>)
   40184a:	4798      	blx	r3
@@ -4680,16 +4682,16 @@ void BUT_init(void){
     /* config. interrupcao em borda de descida no botao do kit */
     /* indica funcao (but_Handler) a ser chamada quando houver uma interrupção */
     pio_enable_interrupt(BUT_PIO, BUT_PIN_MASK);
-  40184c:	f44f 6100 	mov.w	r1, #2048	; 0x800
+  40184c:	f04f 5180 	mov.w	r1, #268435456	; 0x10000000
   401850:	480c      	ldr	r0, [pc, #48]	; (401884 <BUT_init+0x50>)
   401852:	4b0e      	ldr	r3, [pc, #56]	; (40188c <BUT_init+0x58>)
   401854:	4798      	blx	r3
-    pio_handler_set(BUT_PIO, BUT_PIO_ID, BUT_PIN_MASK, PIO_IT_FALL_EDGE, Button1_Handler);
+    pio_handler_set(BUT_PIO, BUT_PIO_ID, BUT_PIN_MASK, PIO_IT_FALL_EDGE, But_Handler);
   401856:	4b0e      	ldr	r3, [pc, #56]	; (401890 <BUT_init+0x5c>)
   401858:	9300      	str	r3, [sp, #0]
   40185a:	2350      	movs	r3, #80	; 0x50
-  40185c:	f44f 6200 	mov.w	r2, #2048	; 0x800
-  401860:	210a      	movs	r1, #10
+  40185c:	f04f 5280 	mov.w	r2, #268435456	; 0x10000000
+  401860:	2110      	movs	r1, #16
   401862:	4808      	ldr	r0, [pc, #32]	; (401884 <BUT_init+0x50>)
   401864:	4c0b      	ldr	r4, [pc, #44]	; (401894 <BUT_init+0x60>)
   401866:	47a0      	blx	r4
@@ -4697,12 +4699,12 @@ void BUT_init(void){
     /* habilita interrupçcão do PIO que controla o botao */
     /* e configura sua prioridade                        */
     NVIC_EnableIRQ(BUT_PIO_ID);
-  401868:	200a      	movs	r0, #10
+  401868:	2010      	movs	r0, #16
   40186a:	4b0b      	ldr	r3, [pc, #44]	; (401898 <BUT_init+0x64>)
   40186c:	4798      	blx	r3
     NVIC_SetPriority(BUT_PIO_ID, 1);
   40186e:	2101      	movs	r1, #1
-  401870:	200a      	movs	r0, #10
+  401870:	2010      	movs	r0, #16
   401872:	4b0a      	ldr	r3, [pc, #40]	; (40189c <BUT_init+0x68>)
   401874:	4798      	blx	r3
 };
@@ -4712,7 +4714,7 @@ void BUT_init(void){
   40187c:	bd90      	pop	{r4, r7, pc}
   40187e:	bf00      	nop
   401880:	00400bed 	.word	0x00400bed
-  401884:	400e0e00 	.word	0x400e0e00
+  401884:	400e1400 	.word	0x400e1400
   401888:	0040057d 	.word	0x0040057d
   40188c:	004006f5 	.word	0x004006f5
   401890:	00401745 	.word	0x00401745
@@ -4731,7 +4733,7 @@ void LED_init(int estado){
   4018a4:	af02      	add	r7, sp, #8
   4018a6:	6078      	str	r0, [r7, #4]
     pmc_enable_periph_clk(LED_PIO_ID);
-  4018a8:	200c      	movs	r0, #12
+  4018a8:	200a      	movs	r0, #10
   4018aa:	4b07      	ldr	r3, [pc, #28]	; (4018c8 <LED_init+0x28>)
   4018ac:	4798      	blx	r3
     pio_set_output(LED_PIO, LED_PIN_MASK, estado, 0, 0 );
@@ -4739,17 +4741,18 @@ void LED_init(int estado){
   4018b0:	2300      	movs	r3, #0
   4018b2:	9300      	str	r3, [sp, #0]
   4018b4:	2300      	movs	r3, #0
-  4018b6:	f44f 7180 	mov.w	r1, #256	; 0x100
-  4018ba:	4804      	ldr	r0, [pc, #16]	; (4018cc <LED_init+0x2c>)
-  4018bc:	4c04      	ldr	r4, [pc, #16]	; (4018d0 <LED_init+0x30>)
-  4018be:	47a0      	blx	r4
+  4018b6:	2101      	movs	r1, #1
+  4018b8:	4804      	ldr	r0, [pc, #16]	; (4018cc <LED_init+0x2c>)
+  4018ba:	4c05      	ldr	r4, [pc, #20]	; (4018d0 <LED_init+0x30>)
+  4018bc:	47a0      	blx	r4
 };
-  4018c0:	bf00      	nop
-  4018c2:	370c      	adds	r7, #12
-  4018c4:	46bd      	mov	sp, r7
-  4018c6:	bd90      	pop	{r4, r7, pc}
+  4018be:	bf00      	nop
+  4018c0:	370c      	adds	r7, #12
+  4018c2:	46bd      	mov	sp, r7
+  4018c4:	bd90      	pop	{r4, r7, pc}
+  4018c6:	bf00      	nop
   4018c8:	00400bed 	.word	0x00400bed
-  4018cc:	400e1200 	.word	0x400e1200
+  4018cc:	400e0e00 	.word	0x400e0e00
   4018d0:	004005fd 	.word	0x004005fd
 
 004018d4 <TC1_init>:
