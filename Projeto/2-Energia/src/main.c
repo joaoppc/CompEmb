@@ -3,6 +3,8 @@
 /************************************************************************/
 /* DEFINES                                                              */
 /************************************************************************/
+#define SLEEP_TIME    5
+#define ACTIVE_TIME   1
 
 /**
  *  Informacoes para o RTC
@@ -10,7 +12,7 @@
  *  ou ser atualizado pelo PC.
  */
 #define YEAR        2017
-#define MONTH      3
+#define MONTH       3
 #define DAY         27
 #define WEEK        13
 #define HOUR        9
@@ -107,6 +109,11 @@ void RTC_Handler(void)
 	}
 }
 
+void RTT_Handler(void)
+{
+	rtt_get_status(RTT);
+}
+
 
 /************************************************************************/
 /* Funcoes                                                              */
@@ -147,6 +154,7 @@ void BUT_init(void){
 void LED_init(int estado){
     pmc_enable_periph_clk(LED_PIO_ID);
     pio_set_output(LED_PIO, LED_PIN_MASK, estado, 0, 0 );
+	
 };
 
 /**
@@ -189,6 +197,8 @@ void RTC_init(){
     /* Configura data e hora manualmente */
     rtc_set_date(RTC, YEAR, MONTH, DAY, WEEK);
     rtc_set_time(RTC, HOUR, MINUTE, SECOND);
+	
+	rtt_init(RTT, 32768);
 
     /* Configure RTC interrupts */
     NVIC_DisableIRQ(RTC_IRQn);
@@ -198,6 +208,7 @@ void RTC_init(){
     
     /* Ativa interrupcao via alarme */
     rtc_enable_interrupt(RTC,  RTC_IER_ALREN); 
+	rtt_enable_interrupt(RTT, RTT_MR_ALMIEN);
     
 }
 
@@ -232,6 +243,7 @@ static void USART1_init(void){
 /* Main Code	                                                        */
 /************************************************************************/
 int main(void){
+	enum sleepmgr_mode current_sleep_mode = SLEEPMGR_ACTIVE;
 	/* Initialize the SAM system */
 	sysclk_init();
 
@@ -240,6 +252,7 @@ int main(void){
 
   /* Configura Leds */
   LED_init(0);
+  ioport_set_pin_level(LED_PIN, 0);
 	
 	/* Configura os botões */
 	BUT_init();    
@@ -253,8 +266,29 @@ int main(void){
   /** Inicializa USART como printf */
   USART1_init();
   
+  sleepmgr_init();
+  sleepmgr_lock_mode(current_sleep_mode);
+  pmc_set_fast_startup_input(PMC_FSMR_RTTAL);
+  #if (!(SAMG51 || SAMG53 || SAMG54))
+	supc_set_wakeup_mode(SUPC, SUPC_WUMR_RTTEN_ENABLE);
+  #endif
+  
 	while (1) {
-		//sleepmgr_enter_sleep();
+		rtt_write_alarm_time(RTT, rtt_read_timer_value(RTT) + SLEEP_TIME);
+		//LED_init(1);
+		ioport_set_pin_level(LED_PIN, 1);
+		sleepmgr_enter_sleep();
+		//LED_init(0);
+		ioport_set_pin_level(LED_PIN, 0);
+		sleepmgr_unlock_mode(current_sleep_mode);
+		delay_s(ACTIVE_TIME);
+		++current_sleep_mode;
+		if ((current_sleep_mode >= SLEEPMGR_NR_OF_MODES)) {
+			current_sleep_mode = SLEEPMGR_ACTIVE;
+		}
+
+		sleepmgr_lock_mode(current_sleep_mode);
+		
 		//pmc_sleep(SLEEPMGR_SLEEP_WFI);
 	}
 	

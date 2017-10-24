@@ -4,6 +4,8 @@
 
 src\ASF\common\services\clock\same70\sysclk.c
 
+src\ASF\common\services\delay\sam\cycle_counter.c
+
 src\ASF\common\services\serial\usart_serial.c
 
 src\ASF\common\services\sleepmgr\sam\sleepmgr.c
@@ -29,6 +31,10 @@ src\ASF\sam\drivers\pmc\pmc.c
 src\ASF\sam\drivers\pmc\sleep.c
 
 src\ASF\sam\drivers\rtc\rtc.c
+
+src\ASF\sam\drivers\rtt\rtt.c
+
+src\ASF\sam\drivers\supc\supc.c
 
 src\ASF\sam\drivers\tc\tc.c
 

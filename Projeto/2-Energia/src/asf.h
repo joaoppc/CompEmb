@@ -56,6 +56,9 @@
 #include <compiler.h>
 #include <status_codes.h>
 
+// From module: Delay routines
+#include <delay.h>
+
 // From module: GPIO - General purpose Input/Output
 #include <gpio.h>
 
@@ -87,11 +90,17 @@
 // From module: RTC - Real Time Clock
 #include <rtc.h>
 
+// From module: RTT - Real Time Timer
+#include <rtt.h>
+
 // From module: SAM FPU driver
 #include <fpu.h>
 
 // From module: SAME70 XPLD LED support enabled
 #include <led.h>
+
+// From module: SUPC - Supply Controller
+#include <supc.h>
 
 // From module: Sleep manager - SAM implementation
 #include <sam/sleepmgr.h>
