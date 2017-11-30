@@ -3,21 +3,10 @@
 /************************************************************************/
 /* DEFINES                                                              */
 /************************************************************************/
-#define SLEEP_TIME    5
+#define SLEEP_TIME    1
 #define ACTIVE_TIME   1
 
-/**
- *  Informacoes para o RTC
- *  poderia ser extraida do __DATE__ e __TIME__
- *  ou ser atualizado pelo PC.
- */
-#define YEAR        2017
-#define MONTH       3
-#define DAY         27
-#define WEEK        13
-#define HOUR        9
-#define MINUTE      5
-#define SECOND      0
+
 
 /**
  * LEDs
@@ -51,67 +40,30 @@ volatile bool g_ledBlinkOn = false;
 /* PROTOTYPES                                                           */
 /************************************************************************/
 
-void BUT_init(void);
+//void BUT_init(void);
 void LED_init(int estado);
-void TC1_init(void);
-void RTC_init(void);
-void pin_toggle(Pio *pio, uint32_t mask);
+//void TC1_init(void);
+//void RTC_init(void);
+//void pin_toggle(Pio *pio, uint32_t mask);
 
 /************************************************************************/
 /* Handlers                                                             */
 /************************************************************************/
 
-/**
- *  Handle Interrupcao botao 1
- */
-static void Button1_Handler(uint32_t id, uint32_t mask)
-{
-	
-}
 
-/**
- *  Interrupt handler for TC1 interrupt. 
- */
-void TC1_Handler(void){
-	volatile uint32_t ul_dummy;
-
-    /****************************************************************
-	* Devemos indicar ao TC que a interrupção foi satisfeita.
-    ******************************************************************/
-	ul_dummy = tc_get_status(TC0, 1);
-
-	/* Avoid compiler warning */
-	UNUSED(ul_dummy);
-
-	/** Muda o estado do LED */
-  pin_toggle(LED_PIO, LED_PIN_MASK);
-    
- }
-
-/**
- * \brief Interrupt handler for the RTC. Refresh the display.
- */
-void RTC_Handler(void)
-{
-	uint32_t ul_status = rtc_get_status(RTC);
-
-	/* Second increment interrupt */
-	if ((ul_status & RTC_SR_SEC) == RTC_SR_SEC) {
-	
-		rtc_clear_status(RTC, RTC_SCCR_SECCLR);
-
-	} else {
-		/* Time or date alarm */
-		if ((ul_status & RTC_SR_ALARM) == RTC_SR_ALARM) {
-      
-			rtc_clear_status(RTC, RTC_SCCR_ALRCLR);
-		}
-	}
-}
+int count = 0;
 
 void RTT_Handler(void)
-{
+{	
+	
 	rtt_get_status(RTT);
+	if (count == 1){
+		LED_init(1);
+		count = 0;
+	}else{
+		LED_init(1);
+		count = 0;
+	}
 }
 
 
@@ -119,34 +71,7 @@ void RTT_Handler(void)
 /* Funcoes                                                              */
 /************************************************************************/
 
-/** 
- *  Toggle pin controlado pelo PIO (out)
- */
-void pin_toggle(Pio *pio, uint32_t mask){
-   if(pio_get_output_data_status(pio, mask))
-    pio_clear(pio, mask);
-   else
-    pio_set(pio,mask);
-}
 
-/**
- * @Brief Inicializa o pino do BUT
- */
-void BUT_init(void){
-    /* config. pino botao em modo de entrada */
-    pmc_enable_periph_clk(BUT_PIO_ID);
-    pio_set_input(BUT_PIO, BUT_PIN_MASK, PIO_PULLUP | PIO_DEBOUNCE);
-    
-    /* config. interrupcao em borda de descida no botao do kit */
-    /* indica funcao (but_Handler) a ser chamada quando houver uma interrupção */
-    pio_enable_interrupt(BUT_PIO, BUT_PIN_MASK);
-    pio_handler_set(BUT_PIO, BUT_PIO_ID, BUT_PIN_MASK, PIO_IT_FALL_EDGE, Button1_Handler);
-    
-    /* habilita interrupçcão do PIO que controla o botao */
-    /* e configura sua prioridade                        */
-    NVIC_EnableIRQ(BUT_PIO_ID);
-    NVIC_SetPriority(BUT_PIO_ID, 1);
-};
 
 /**
  * @Brief Inicializa o pino do LED
@@ -157,60 +82,7 @@ void LED_init(int estado){
 	
 };
 
-/**
- * Configura TimerCounter (TC0) para gerar uma interrupcao no canal 0-(ID_TC1) 
- * a cada 250 ms (4Hz)
- */
-void TC1_init(void){   
-    uint32_t ul_div;
-    uint32_t ul_tcclks;
-    uint32_t ul_sysclk = sysclk_get_cpu_hz();
     
-    uint32_t channel = 1;
-    
-    /* Configura o PMC */
-    pmc_enable_periph_clk(ID_TC1);    
-
-    /** Configura o TC para operar em  4Mhz e interrupçcão no RC compare */
-    tc_find_mck_divisor(4, ul_sysclk, &ul_div, &ul_tcclks, ul_sysclk);
-    tc_init(TC0, channel, ul_tcclks | TC_CMR_CPCTRG);
-    tc_write_rc(TC0, channel, (ul_sysclk / ul_div) / 4);
-
-    /* Configura e ativa interrupçcão no TC canal 0 */
-    NVIC_EnableIRQ((IRQn_Type) ID_TC1);
-    tc_enable_interrupt(TC0, channel, TC_IER_CPCS);
-
-    /* Inicializa o canal 0 do TC */
-    tc_start(TC0, channel);
-}
-
-/**
- * Configura o RTC para funcionar com interrupcao de alarme
- */
-void RTC_init(){
-    /* Configura o PMC */
-    pmc_enable_periph_clk(ID_RTC);
-        
-    /* Default RTC configuration, 24-hour mode */
-    rtc_set_hour_mode(RTC, 0);
-
-    /* Configura data e hora manualmente */
-    rtc_set_date(RTC, YEAR, MONTH, DAY, WEEK);
-    rtc_set_time(RTC, HOUR, MINUTE, SECOND);
-	
-	rtt_init(RTT, 32768);
-
-    /* Configure RTC interrupts */
-    NVIC_DisableIRQ(RTC_IRQn);
-    NVIC_ClearPendingIRQ(RTC_IRQn);
-    NVIC_SetPriority(RTC_IRQn, 0);
-    NVIC_EnableIRQ(RTC_IRQn);
-    
-    /* Ativa interrupcao via alarme */
-    rtc_enable_interrupt(RTC,  RTC_IER_ALREN); 
-	rtt_enable_interrupt(RTT, RTT_MR_ALMIEN);
-    
-}
 
 /**
  * \brief Configure UART console.
@@ -243,6 +115,8 @@ static void USART1_init(void){
 /* Main Code	                                                        */
 /************************************************************************/
 int main(void){
+
+	
 	enum sleepmgr_mode current_sleep_mode = SLEEPMGR_ACTIVE;
 	/* Initialize the SAM system */
 	sysclk_init();
@@ -252,44 +126,34 @@ int main(void){
 
   /* Configura Leds */
   LED_init(0);
-  ioport_set_pin_level(LED_PIN, 0);
-	
-	/* Configura os botões */
-	BUT_init();    
-    
-  /** Configura timer 0 */
-  TC1_init();
-    
-  /** Configura RTC */
-  RTC_init();
   
-  /** Inicializa USART como printf */
-  USART1_init();
-  
-  sleepmgr_init();
-  sleepmgr_lock_mode(current_sleep_mode);
+
+
+ rtt_init(RTT, 32768);
+ /* Enable RTT interrupt */
+ NVIC_DisableIRQ(RTT_IRQn);
+ NVIC_ClearPendingIRQ(RTT_IRQn);
+ NVIC_SetPriority(RTT_IRQn, 0);
+ NVIC_EnableIRQ(RTT_IRQn);
+ rtt_enable_interrupt(RTT, RTT_MR_ALMIEN);
+  pmc_disable_pllack();
   pmc_set_fast_startup_input(PMC_FSMR_RTTAL);
   #if (!(SAMG51 || SAMG53 || SAMG54))
 	supc_set_wakeup_mode(SUPC, SUPC_WUMR_RTTEN_ENABLE);
+	supc_backup_sram_off(SUPC);
+	
   #endif
+  sleepmgr_init();
+  sleepmgr_lock_mode(current_sleep_mode);
   
 	while (1) {
-		rtt_write_alarm_time(RTT, rtt_read_timer_value(RTT) + SLEEP_TIME);
-		//LED_init(1);
-		ioport_set_pin_level(LED_PIN, 1);
-		sleepmgr_enter_sleep();
-		//LED_init(0);
-		ioport_set_pin_level(LED_PIN, 0);
-		sleepmgr_unlock_mode(current_sleep_mode);
-		delay_s(ACTIVE_TIME);
-		++current_sleep_mode;
-		if ((current_sleep_mode >= SLEEPMGR_NR_OF_MODES)) {
-			current_sleep_mode = SLEEPMGR_ACTIVE;
-		}
-
-		sleepmgr_lock_mode(current_sleep_mode);
 		
-		//pmc_sleep(SLEEPMGR_SLEEP_WFI);
+		rtt_write_alarm_time(RTT, rtt_read_timer_value(RTT) + SLEEP_TIME);
+		
+		sleepmgr_enter_sleep();
+		
+		sleepmgr_unlock_mode(current_sleep_mode);
+		
 	}
 	
 }

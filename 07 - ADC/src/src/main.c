@@ -97,6 +97,7 @@ static int32_t convert_adc_to_temp(int32_t ADC_value){
   return(ul_temp);
 }
 
+
 /************************************************************************/
 /* Call backs / Handler                                                 */
 /************************************************************************/
@@ -112,6 +113,38 @@ static void AFEC_Temp_callback(void)
 
 void RTC_Handler(void)
 {
+	
+	uint32_t ul_status = rtc_get_status(RTC);
+	/* Second increment interrupt */
+	if ((ul_status & RTC_SR_SEC) == RTC_SR_SEC) {
+		/*Atualiza hora */
+		uint32_t ano,mes,dia,hora,minuto,segundo;
+		
+		rtc_get_date(RTC, &ano, &mes, &dia, NULL);
+		rtc_get_time(RTC, &hora, &minuto, &segundo);
+		
+		
+		/* configura novo alarme do RTC */
+		rtc_set_date_alarm(RTC, 1, mes, 1, dia);
+		rtc_set_time_alarm(RTC, 1, hora, 1, minuto, 1, segundo);
+		
+		/* printa valor de temperatura */
+		is_conversion_done = false;
+		int temp = convert_adc_to_temp(g_ul_value);
+		printf("%d/%d/%d - %d:%d:%d - Temp : %d \r\n",dia,mes,ano,hora,minuto,segundo,temp);
+		afec_start_software_conversion(AFEC0);
+		
+		rtc_clear_status(RTC, RTC_SCCR_SECCLR);
+
+		} else {
+		/* Time or date alarm */
+		if ((ul_status & RTC_SR_ALARM) == RTC_SR_ALARM) {
+			
+			
+
+			rtc_clear_status(RTC, RTC_SCCR_ALRCLR);
+		}
+	}
 	
 }
 	
@@ -137,7 +170,7 @@ void RTC_init(){
 	NVIC_EnableIRQ(RTC_IRQn);
 	
 	/* Ativa interrupcao via alarme */
-	rtc_enable_interrupt(RTC,  RTC_IER_ALREN);
+	rtc_enable_interrupt(RTC,  RTC_IER_SECEN);
 	
 }
 
@@ -213,15 +246,23 @@ int main(void)
   
 
   afec_start_software_conversion(AFEC0);
-	while (1) {
-		if(is_conversion_done == true) {
-			is_conversion_done = false;
+  //rtc_set_time_alarm(RTC, 1, HOUR, 1, MINUTE, 1, SECOND+1);
+  //afec_start_software_conversion(AFEC0);
+	//while (1) {
+		//if(is_conversion_done == true) {
+		//	is_conversion_done = false;
       
       //printf("Temp : ????? \r\n", (int) temp);
-	  //printf("Valor %d \r\n", (int) g_ul_value);
-	  printf("Temp : %d \r\n", (int) convert_adc_to_temp(g_ul_value));
 	  
-      afec_start_software_conversion(AFEC0);
-		}
-	}
+	  //rtc_set_time_alarm(RTC, 1, HOUR, 1, MINUTE, 1, SECOND+1);
+	  //printf("Valor %d \r\n", (int) g_ul_value);
+	  //printf("Temp : %d \r\n", (int) convert_adc_to_temp(g_ul_value));
+	  
+      //afec_start_software_conversion(AFEC0);
+	  
+			while(1){
+			}
+	  
+		//}	
+	//}
 }
