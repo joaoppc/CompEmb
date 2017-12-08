@@ -185,7 +185,7 @@ void but2_init(void){
     /* config. interrupcao em borda de descida no botao do kit */
     /* indica funcao (but_Handler) a ser chamada quando houver uma interrupção */
     pio_enable_interrupt(BUT2_PIO, BUT2_PIN_MASK);
-    pio_handler_set(BUT2_PIO, BUT2_PIO_ID, BUT2_PIN_MASK, PIO_IT_FALL_EDGE, but2_Handler);
+    pio_handler_set(BUT2_PIO, BUT2_PIO_ID, BUT2_PIN_MASK, PIO_IT_RISE_EDGE, but2_Handler);
     
     /* habilita interrupçcão do PIO que controla o botao */
     /* e configura sua prioridade                        */
@@ -200,7 +200,7 @@ void but3_init(void){
     /* config. interrupcao em borda de descida no botao do kit */
     /* indica funcao (but_Handler) a ser chamada quando houver uma interrupção */
     pio_enable_interrupt(BUT3_PIO, BUT3_PIN_MASK);
-    pio_handler_set(BUT3_PIO, BUT3_PIO_ID, BUT3_PIN_MASK, PIO_IT_FALL_EDGE, but3_Handler);
+    pio_handler_set(BUT3_PIO, BUT3_PIO_ID, BUT3_PIN_MASK, PIO_IT_FALL_EDGE&&PIO_IT_RISE_EDGE, but3_Handler);
     
     /* habilita interrupçcão do PIO que controla o botao */
     /* e configura sua prioridade                        */
