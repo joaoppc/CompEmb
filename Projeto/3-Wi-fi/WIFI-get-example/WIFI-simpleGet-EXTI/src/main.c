@@ -184,6 +184,19 @@ static void socket_cb(SOCKET sock, uint8_t u8Msg, void *pvMsg)
 			tstrSocketRecvMsg *pstrRecv = (tstrSocketRecvMsg *)pvMsg;
 			if (pstrRecv && pstrRecv->s16BufferSize > 0) {
         printf(pstrRecv->pu8Buffer );//retorno do get html
+		char barriga[15] = "barriga";
+	
+		char *ret1;
+		
+		
+		ret1 = strstr(pstrRecv->pu8Buffer, barriga);
+		printf("esse rettt %s\n",ret1);
+		
+		
+		if (ret1 !=NULL){
+			printf("funcionou mlk");
+			delay_ms(500);
+		}
 		printf("\n");
 				
 				memset(gau8ReceivedBuffer, 0, sizeof(gau8ReceivedBuffer));
@@ -336,7 +349,7 @@ int main(void)
 				}else{
           gbTcpConnection = true;
         }
-			}
+	  }
     }
   }
 
