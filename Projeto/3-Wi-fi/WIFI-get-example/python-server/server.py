@@ -9,15 +9,15 @@ global alimentar
 alimentar = 'none'
 @app.route("/", methods = ['GET','POST'])
 def root(): 
-	global alimentar	
-	if request.method == 'POST':
-		if request.form['submit']=='alimentar':
+    global alimentar    
+    if request.method == 'POST':
+        if request.form['submit']=='alimentar':
 
-			alimentar = 'barriga cheia'
+            alimentar = 'barriga cheia'
 
-			return render_template("info.html", alimentar = alimentar)
-	elif request.method == 'GET':	
- 		return render_template('info.html', alimentar = alimentar)
+            return render_template("info.html", alimentar = alimentar)
+    elif request.method == 'GET':   
+        return render_template('info.html', alimentar = alimentar)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
